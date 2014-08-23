@@ -20,6 +20,6 @@ public class Teleporter : MonoBehaviour {
 		Vector3 nextPos = col.transform.position;
 		float yDelta = nextTeleporter.position.y - transform.position.y;
 		nextPos.y = nextPos.y + yDelta;
-		col.gameObject.SendMessage("TryTeleportTo", nextPos);
+		col.gameObject.SendMessageUpwards("TryTeleportTo", nextPos);
 	}
 }
