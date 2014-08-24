@@ -55,6 +55,12 @@ public class Ball : MonoBehaviour {
 		trail.startColor = ballSprite.color;
 	}
 
+	void OutOfBoundsCheck(){
+		if(Vector3.Distance(transform.position, Vector3.zero) > 35f){
+			Reset(true);
+		}
+	}
+
 	public float speedRatio;
 
 	public static Color ColorLerp(Color c1, Color c2, float t){
@@ -69,8 +75,13 @@ public class Ball : MonoBehaviour {
 		Burst(10);
 	}
 
+	void Reset(bool hardReset=false){
+		transform.position = new Vector3(0f, transform.position.y, transform.position.z);
+		RandomPush();
+	}
+
 	void RandomPush(){
-		Vector2 force = new Vector2(5f, Random.value);
+		Vector2 force = new Vector2(Mathf.Sign(Random.value)*5f, Random.value);
 		rigidbody2D.velocity = force;
 	}
 
@@ -117,9 +128,6 @@ public class Ball : MonoBehaviour {
 	private IEnumerator _InvokeNextFrame(Function function){
 		yield return null;
 		function();
-	}
-	void OnCollisionEnter2d(Collision2D col){
-		print ("Ball hit:" +col.gameObject.tag);
 	}
 
 

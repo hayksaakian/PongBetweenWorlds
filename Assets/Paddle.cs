@@ -7,12 +7,12 @@ public class Paddle : MonoBehaviour {
 
 	float fixedXPosition = 0f;
 
-	float e = 2.72828f;
+//	float e = 2.72828f;
 
-	float bounceMultiplier = 2.5f;
+//	float bounceMultiplier = 2.5f;
 	
 	public Vector3 targetPosition = Vector3.zero;
-	Vector3 lastPosition = Vector3.zero;
+//	Vector3 lastPosition = Vector3.zero;
 
 	ParticleSystem debrisEmitter;
 
@@ -20,11 +20,11 @@ public class Paddle : MonoBehaviour {
 	void Start () {
 		fixedXPosition = transform.position.x;
 		targetPosition = transform.position;
-		lastPosition = transform.position;
+//		lastPosition = transform.position;
 		debrisEmitter = GetComponentInChildren<ParticleSystem>();
 	}
 
-	bool arrived = true;
+//	bool arrived = true;
 	
 	// Update is called once per frame
 	void Update () {
@@ -38,7 +38,7 @@ public class Paddle : MonoBehaviour {
 //			if(arrived == false){
 				rigidbody2D.velocity = Vector2.zero;
 				targetPosition = transform.position;
-				arrived = true;
+//				arrived = true;
 //			}
 		}
 		
@@ -69,15 +69,15 @@ public class Paddle : MonoBehaviour {
 	public Vector3 realDiff;
 	public float realSpeed = 0f;
 
-	float maxSize = 1.5f;
-	float minSize = 0.5f;
+//	float maxSize = 1.5f;
+//	float minSize = 0.5f;
 
 	void FixedUpdate(){
 
 	}
 
 	void MoveTo(Vector3 location){
-		arrived = false;
+//		arrived = false;
 		location.x = fixedXPosition;
 		targetPosition = location;
 	}

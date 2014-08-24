@@ -35,4 +35,26 @@ public class Goal : MonoBehaviour {
 		}
 	}
 
+	int stuck_frames = 0;
+	string stuck_thing = "";
+
+	void OnTriggerStay2D(Collider2D col){
+//		string tag = col.gameObject.tag;
+		print (col.name+" might be stuck!");
+		if(stuck_frames > 10  && stuck_thing == col.name){
+			stuck_frames = 0;
+			stuck_thing = "";
+			print (col.name+" is probably stuck!");
+			col.gameObject.transform.root.BroadcastMessage("Reset", false);
+//			Debug.Break();
+		}
+		stuck_thing = col.name;
+		stuck_frames += 1;
+	}
+
+	void OnTriggerExit2D(Collider2D col){
+		stuck_thing = "";
+		stuck_frames = 0;
+	}
+
 }
