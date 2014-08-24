@@ -7,11 +7,37 @@ public class Teleporter : MonoBehaviour {
 	public Transform nextTeleporter;
 	public List<GameObject> otherTeleporters;
 
+	public Color activeColor;
+	public Color nextColor;
+	public Color inactiveColor;
+	bool active = false;
+
+	SpriteRenderer sprite;
+
+	public bool Active{
+		set{
+			active = value;
+			sprite.color = active ? activeColor : inactiveColor;
+			if(Active)
+				nextTeleporter.SendMessage("SetNext");
+		}
+		get{
+			return active;
+		}
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		otherTeleporters = new List<GameObject>(GameObject.FindGameObjectsWithTag("Teleporter"));
 		otherTeleporters.Remove(gameObject);
-
+		sprite = GetComponent<SpriteRenderer>();
+		SortTeleporters();
+		Transform ball = GameObject.FindGameObjectWithTag("Ball").transform;
+		ballPosition = ball.transform.position;
+		if(Vector3.Distance(transform.position, ballPosition) < Vector3.Distance(otherTeleporters[0].transform.position, ballPosition)){
+			Active = true;
+		}
 	}
 
 	bool shrink_top = false;
@@ -31,25 +57,49 @@ public class Teleporter : MonoBehaviour {
 //		}
 	}
 
+	
+	static float teleportCooldown = 0.1f;
+	static float lastTeleportTime = -0.1f;
+
 	void OnTriggerEnter2D(Collider2D col){
-		print ("teleporting");
-		//SortTeleporters();
-		//nextTeleporter = otherTeleporters[0].transform;
-
-		ballPosition = col.transform.position;
-
-		Vector3 nextPos = ballPosition;
-//
-//		shrink_top = true;
 
 
-		float yDelta = nextTeleporter.position.y - transform.position.y;
-		nextPos.y = nextPos.y + yDelta;
-		nextPos.x = nextTeleporter.position.x;
-		col.gameObject.SendMessageUpwards("TryTeleportTo", nextPos);
+		
+		Rigidbody2D rb = col.gameObject.transform.root.rigidbody2D;
+		if(Mathf.Sign (rb.velocity.x) != Mathf.Sign (rb.position.x)){
+//		if(Time.time > lastTeleportTime+teleportCooldown){
+			print ("teleporting");
+			//SortTeleporters();
+			//nextTeleporter = otherTeleporters[0].transform;
+
+			Active =  false;
+			nextTeleporter.SendMessage ("Activate", true);
+
+			ballPosition = col.transform.position;
+
+			Vector3 nextPos = ballPosition;
+	//
+	//		shrink_top = true;
+
+
+			float yDelta = nextTeleporter.position.y - transform.position.y;
+			nextPos.y = nextPos.y + yDelta;
+			nextPos.x = nextTeleporter.position.x;
+			col.gameObject.SendMessageUpwards("TeleportTo", nextPos);
+
+			lastTeleportTime = Time.time;
+		}
 	}
 
-	Vector3 ballPosition = Vector3.zero;
+	void SetNext(){
+		sprite.color = nextColor;
+	}
+
+	void Activate(bool state){
+		Active = state;
+	}
+
+	static Vector3 ballPosition = Vector3.zero;
 
 	protected  int SortByY(GameObject o1, GameObject o2){
 		return Mathf.RoundToInt(Vector3.Distance(o1.transform.position, ballPosition) - Vector3.Distance(o2.transform.position, ballPosition));
