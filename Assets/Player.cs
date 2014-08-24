@@ -2,29 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour {
-	
-	List<GameObject> horizontalBarriers;
-	List<GameObject> paddles;
-	
-	List<float> ySeparaters;
+public class Player : PaddleController {
 
 	// Use this for initialization
 	void Start () {
-		horizontalBarriers = new List<GameObject>(GameObject.FindGameObjectsWithTag("HorizontalBarrier"));
-		ySeparaters = new List<float>();
-		foreach(GameObject t in horizontalBarriers){
-			ySeparaters.Add (t.transform.position.y);
-		}
-		ySeparaters.Sort ();
+		base.AlignBarriers();
 
 		paddles = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+		base.SortPaddles();
 
-		SortPaddles();
-
-	}
-	private static int SortByY(GameObject o1, GameObject o2){
-		return Mathf.RoundToInt(o1.transform.position.y - o2.transform.position.y);
 	}
 	
 	// Update is called once per frame
@@ -53,25 +39,6 @@ public class Player : MonoBehaviour {
 //
 //		paddle.SendMessage("MoveTo", location);
 
-	}
-
-	void SortPaddles(){
-		paddles.Sort (SortByY);
-	}
-
-	void SendInput(Vector3 location){
-		int whichPaddle = 0;
-		for(int i = 0; i< ySeparaters.Count;i++){
-			float yp = ySeparaters[i];
-			if(location.y > yp){
-				whichPaddle += 1;
-			}else{
-				break;
-			}
-		}
-//		print (whichPaddle);
-		paddles[whichPaddle].SendMessage("MoveTo", location);
-		SortPaddles();
 	}
 
 }
