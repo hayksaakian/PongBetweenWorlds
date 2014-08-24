@@ -30,9 +30,13 @@ public class Goal : MonoBehaviour {
 		string tag = col.gameObject.tag;
 		if(tag == "Ball"){
 			Transform ball = col.gameObject.transform.root;
-			Score += 1;
+			SendMessage("AddScore");
 			print ("Goal!!! "+ball.name);
 		}
+	}
+
+	void AddScore(){
+		Score += 1;
 	}
 
 	int stuck_frames = 0;

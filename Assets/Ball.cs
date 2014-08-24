@@ -95,9 +95,10 @@ public class Ball : MonoBehaviour {
 	}
 
 	void TeleportTo(Vector3 position){
-		BurstTeleporter(10);
+		SendMessage("BurstTeleporter", 10);
 		trail.enableEmission = false;
 		transform.position = position;
+
 		lastTeleportTime = Time.time;
 		InvokeNextFrame(EnableTrail);
 	}

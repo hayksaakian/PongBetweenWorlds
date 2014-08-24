@@ -90,10 +90,14 @@ public class Paddle : MonoBehaviour {
 		if(tag == "Ball"){
 			Transform ball = col.gameObject.transform.root;
 
-			debrisEmitter.Emit(10);
+			SendMessage("EmitDebris", 10);
 //			debrisEmitter.
 
 			print ("bouncing "+ball.name);
 		}
+	}
+
+	void EmitDebris(int quantity){
+		debrisEmitter.Emit(quantity);
 	}
 }
