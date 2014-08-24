@@ -89,11 +89,9 @@ public class Paddle : MonoBehaviour {
 		string tag = col.gameObject.tag;
 		if(tag == "Ball"){
 			Transform ball = col.gameObject.transform.root;
-//			Vector2 v = ball.rigidbody2D.velocity;
-//			v.x = v.x*bounceMultiplier;
-//			col.attachedRigidbody.rel;
+
 			debrisEmitter.Emit(10);
-			debrisEmitter.
+//			debrisEmitter.
 
 			print ("bouncing "+ball.name);
 		}
